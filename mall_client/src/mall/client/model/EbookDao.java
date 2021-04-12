@@ -18,7 +18,7 @@ public class EbookDao {
 		ResultSet rs = null;
 		try { //예외처리를 try catch 문으로.
 		conn = this.dbutil.getConnection();
-		String sql = "SELECT ebook_title ebookTitle, ebook_price ebookPrice, ebook_img ebookImg FROM ebook ORDER BY ebook_date DESC LIMIT ?, ?";
+		String sql = "SELECT ebook_title ebookTitle, ebook_price ebookPrice FROM ebook ORDER BY ebook_date DESC LIMIT ?, ?";
 		stmt = conn.prepareStatement(sql);
 		stmt.setInt(1, beginRow);
 		stmt.setInt(2, rowPerPage);
@@ -27,7 +27,7 @@ public class EbookDao {
 			Ebook e = new Ebook();
 			e.setEbookTitle(rs.getString("ebookTitle"));
 			e.setEbookPrice(rs.getInt("ebookPrice"));
-			e.setEbookImg(rs.getString("ebookImg"));
+			//e.setEbookImg(rs.getString("ebookImg"));
 			list.add(e);
 		}
 		} catch(Exception e) {
