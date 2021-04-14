@@ -16,20 +16,26 @@ public class DBUtil {
 	}
 	//DB 자원(conn, stmt, rs) 해제
 	public void close(ResultSet rs, PreparedStatement stmt, Connection conn) {
-		try {
-			rs.close();
-		} catch (Exception e) {
-			e.printStackTrace();
+		if(rs != null) { //null이 들어올 수도 있으므로 null이 아닐 때만 클로즈할 수 있도록.
+			try {
+				rs.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
-		try {
-			stmt.close();
-		} catch (Exception e) {
-			e.printStackTrace();
+		if(stmt != null) {
+			try {
+				stmt.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
-		try {
-			conn.close();
-		} catch (Exception e) {
-			e.printStackTrace();
+		if(conn != null) {
+			try {
+				conn.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 }

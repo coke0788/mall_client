@@ -11,6 +11,11 @@
 			PW : <input type="password" name="clientPw" placeholder="●●●●" value="1234">
 			<button type="submit">login</button>
 		</form>
+		<ul>
+			<li><a href="<%=request.getContextPath() %>/IndexController"><button type="button">home</button></a></li>
+			<!-- InsertClientController, /view/client/insertClient.jsp -->
+			<li><a href="<%=request.getContextPath()%>/InsertClientController"><button type="button">회원가입</button></a></li>
+		</ul>
 	</div>
 <%
 	} else {
@@ -23,7 +28,9 @@
 		<ul>
 			<li><a href="<%=request.getContextPath() %>/IndexController"><button type="button">home</button></a></li>
 			<li><a href="<%=request.getContextPath() %>/LogoutController"><button type="button">logout</button></a></li>
-			<li><a href="<%=request.getContextPath() %>/CartListController"><button type="button">Cart</button></a></li>
+			<!-- ClientOneController, CientDao.selectClientOne(), /view/client/clientOne.jsp -->
+			<li><a href="<%=request.getContextPath() %>/ClientOne"><button type="button">회원정보</button></a></li>
+			<li><a href="<%=request.getContextPath() %>/CartListController"><button type="button">장바구니</button></a></li>
 		</ul>
 	</div>
 <%
