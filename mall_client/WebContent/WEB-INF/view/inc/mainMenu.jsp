@@ -28,8 +28,7 @@
 		<ul>
 			<li><a href="<%=request.getContextPath() %>/IndexController"><button type="button">home</button></a></li>
 			<li><a href="<%=request.getContextPath() %>/LogoutController"><button type="button">logout</button></a></li>
-			<!-- ClientOneController, CientDao.selectClientOne(), /view/client/clientOne.jsp -->
-			<li><a href="<%=request.getContextPath() %>/ClientOne"><button type="button">회원정보</button></a></li>
+			<li><a href="<%=request.getContextPath() %>/ClientOneController"><button type="button">회원정보</button></a></li>
 			<li><a href="<%=request.getContextPath() %>/CartListController"><button type="button">장바구니</button></a></li>
 		</ul>
 	</div>

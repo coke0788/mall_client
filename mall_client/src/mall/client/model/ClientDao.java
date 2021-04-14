@@ -4,9 +4,39 @@ import mall.client.commons.DBUtil;
 import mall.client.vo.Client;
 
 import java.sql.*;
+import java.util.List;
 
 public class ClientDao {
 	private DBUtil dbUtil;
+	//상세페이지 메서드
+	public Client selectClientOne(String clientMail) {
+		//dbUtil 객체 생성
+		this.dbUtil = new DBUtil();
+		//리턴값, db 자원 초기화
+		Client client = new Client();
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		try {
+			String sql = "SELECT * FROM client WHERE client_mail=? ";
+			conn=this.dbUtil.getConnection();
+			stmt=conn.prepareStatement(sql);
+			stmt.setString(1, clientMail);
+			rs=stmt.executeQuery();
+			System.out.println("상세정보 stmt : " + stmt);
+			if(rs.next()) {
+				client.setClientDate(rs.getString("client_date"));
+				client.setClientMail(rs.getString("client_mail"));
+				client.setClientNo(rs.getInt("client_no"));
+				client.setClientPw(rs.getString("client_pw"));
+			}
+		} catch(Exception e) { //예외처리하지만 오류는 출력 시킬 것임.
+			e.printStackTrace();
+		} finally { //db자원 close
+			dbUtil.close(rs, stmt, conn);
+		}
+		return client;
+	}
 	//회원가입 메서드
 	public int insertClient(Client client) { //매개변수는 Client vo의 전부
 		this.dbUtil = new DBUtil();
