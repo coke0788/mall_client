@@ -36,7 +36,7 @@ public class ClientDao {
 		Connection conn=null;
 		PreparedStatement stmt=null;
 		ResultSet rs = null;
-		String sql="SELECT client_mail FROM client WHER client_mail=?";
+		String sql="SELECT client_mail FROM client WHERE client_mail=?";
 		try {
 			conn = this.dbUtil.getConnection();
 			stmt = conn.prepareStatement(sql);
