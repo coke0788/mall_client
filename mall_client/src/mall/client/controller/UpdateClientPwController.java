@@ -43,6 +43,7 @@ public class UpdateClientPwController extends HttpServlet {
 		client.setClientPw(clientPw);
 		client.setClientMail(((Client)(session.getAttribute("loginClient"))).getClientMail());
 		clientDao.updateClientPw(client);
+		//로그아웃
 		session.invalidate();
 		//index로 이동
 		response.sendRedirect(request.getContextPath()+"/IndexController");

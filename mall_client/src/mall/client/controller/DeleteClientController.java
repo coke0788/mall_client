@@ -25,8 +25,10 @@ public class DeleteClientController extends HttpServlet {
 			return;
 		}
 		//dao 호출
+		//삭제는 회원의 카트 전체 삭제도 해줘야 한다.
 		clientDao=new ClientDao();
 		cartDao = new CartDao();
+		//clientMail이 매개변수로 이용되기 때문에 clientmail 변수 선언. 값은 session의 clientmail 값을 저장.
 		String clientMail = ((Client)(session.getAttribute("loginClient"))).getClientMail();
 		clientDao.deleteClient(clientMail);
 		cartDao.deleteCartAll(clientMail);
