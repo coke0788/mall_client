@@ -9,33 +9,35 @@
 <body>
 	<jsp:include page="/WEB-INF/view/inc/mainMenu.jsp"></jsp:include>
 	<%
-		Client clientOne = (Client)request.getAttribute("clientOne");
+		Client client = (Client)request.getAttribute("client");
 	%>
 	<h1>회원정보</h1>
-		<form>
 			<table border="1">
 				<tr>
 					<td>clientNo</td>
-					<td><%=clientOne.getClientNo() %></td>
+					<td><%=client.getClientNo() %></td>
 				</tr>
 				<tr>
 					<td>clientMail</td>
-					<td><%=clientOne.getClientMail() %></td>
+					<td><%=client.getClientMail() %></td>
 				</tr>
 				<tr>
 					<td>clientPw</td>
-					<td><input type="text"></td>
+					<td>		
+					<!-- UpdateClientPwController(doGet) - updateClientPw.jsp -->
+					<!-- UpdateClientPwController(doPost) - ClientDao().updateClientPw - session invalidate(controller에 있어야함.) - redirect:/IndexController -->
+					<a href="<%=request.getContextPath()%>/UpdateClientPwController"><button type="button">비밀번호수정</button></a>
+					</td>
 				</tr>
 				<tr>
 					<td>clientDate</td>
-					<td><%=clientOne.getClientDate() %></td>
+					<td><%=client.getClientDate() %></td>
 				</tr>
 			</table>
-		</form>
 		<%
-			System.out.printf("상세정보 : %d, %s, %s%n",clientOne.getClientNo(), clientOne.getClientMail(), clientOne.getClientDate());
+			System.out.printf("상세정보 : %d, %s, %s%n",client.getClientNo(), client.getClientMail(), client.getClientDate());
 		%>
-		<button type="submit">비밀번호 수정</button>
-		<a href=""><button type="button">탈퇴</button></a>
+		<!-- DeleteClientController - ClientDao().deleteClient, CartDao().deleteCartAll(mail) - session invalidate(controller에 있어야함.) - redirect:/IndexController -->
+		<a href="<%=request.getContextPath()%>/DeleteClientController"><button type="button">회원탈퇴</button></a>
 </body>
 </html>

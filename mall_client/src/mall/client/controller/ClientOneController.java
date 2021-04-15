@@ -33,9 +33,9 @@ public class ClientOneController extends HttpServlet {
 		*/   
 		String clientMail = ((Client)(session.getAttribute("loginClient"))).getClientMail(); 
 		this.clientDao = new ClientDao();
-		Client clientOne = clientDao.selectClientOne(clientMail);
+		Client client = clientDao.selectClientOne(clientMail);
 		//forwarding
-		request.setAttribute("clientOne", clientOne);
+		request.setAttribute("client", client);
 		//리퀘스트와 리스폰스값을 뷰에 요청하여 연결.
 		request.getRequestDispatcher("/WEB-INF/view/client/clientOne.jsp").forward(request, response);
 		System.out.println("client Mail :"+clientMail);

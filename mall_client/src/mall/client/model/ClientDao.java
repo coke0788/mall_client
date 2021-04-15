@@ -110,4 +110,47 @@ public class ClientDao {
 		}
 	return returnClient;
 	}
+	//비밀번호 수정 메서드
+	public int updateClientPw(Client client) {
+		this.dbUtil=new DBUtil();
+		int rowCnt=0;
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		try {
+			conn = this.dbUtil.getConnection();
+			String sql = "UPDATE client SET client_pw=PASSWORD(?) WHERE client_mail=?";
+			stmt = conn.prepareStatement(sql);
+			stmt.setString(1, client.getClientPw());
+			stmt.setString(2, client.getClientMail());
+			System.out.println("비밀번호 수정 stmt :"+stmt);
+			rowCnt=stmt.executeUpdate();
+		} catch(Exception e) {
+			//오류 내용 출력
+			e.printStackTrace();
+		} finally {
+			this.dbUtil.close(null, stmt, conn);
+		}
+		return rowCnt;
+	}
+	//회원 삭제 메서드
+	public int deleteClient(String clientMail) {
+		this.dbUtil=new DBUtil();
+		int rowCnt=0;
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		try {
+			conn = this.dbUtil.getConnection();
+			String sql = "DELETE from client WHERE client_mail=?";
+			stmt = conn.prepareStatement(sql);
+			stmt.setString(1, clientMail);
+			System.out.println("회원 삭제 stmt :"+stmt);
+			rowCnt=stmt.executeUpdate();
+		} catch(Exception e) {
+			//오류 내용 출력
+			e.printStackTrace();
+		} finally {
+			this.dbUtil.close(null, stmt, conn);
+		}
+		return rowCnt;
+	}
 }

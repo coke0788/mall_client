@@ -43,4 +43,96 @@ public class CartDao {
 		}
 		return list;
 	}
+	//카트 추가 메서드
+	public int insertCart(Cart cart) {
+		int rowCnt=0;
+		dbUtil = new DBUtil();
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		//try catch문으로 예외처리. finally로 닫기.
+		try{
+			conn=this.dbUtil.getConnection();
+			String sql = "INSERT INTO cart(client_mail, ebook_no, cart_date) VALUES(?, ?, now())";
+			stmt = conn.prepareStatement(sql);
+			stmt.setString(1, cart.getClientMail());
+			stmt.setInt(2, cart.getEbookNo());
+			System.out.println("insertCart stmt:"+stmt);
+			rowCnt=stmt.executeUpdate();
+		} catch(Exception e) {
+			//오류 내용 출력
+			e.printStackTrace();
+		} finally {
+			//DB자원 닫기.
+			this.dbUtil.close(null, stmt, conn);
+		}
+		return rowCnt;
+	}
+	//카트 중복확인 메서드
+	public boolean selectClientMail(Cart cart) {
+		boolean flag = true; //flag가 true이면 중복 없음, flag가 false이면 중복이 있다.
+		dbUtil = new DBUtil();
+		Connection conn=null;
+		PreparedStatement stmt=null;
+		ResultSet rs = null;
+		String sql="SELECT * FROM cart WHERE client_mail=? AND ebook_no=?";
+		try {
+			conn = this.dbUtil.getConnection();
+			stmt = conn.prepareStatement(sql);
+			stmt.setString(1, cart.getClientMail());
+			stmt.setInt(2, cart.getEbookNo());
+			rs = stmt.executeQuery();
+			System.out.println("카트 중복검사 stmt : "+stmt);
+			if(rs.next()) {
+				flag = false;
+			}
+		} catch(Exception e) { //오류 출력
+			e.printStackTrace();
+		} finally { //db자원 닫기
+			dbUtil.close(rs, stmt, conn);
+		}
+		return flag;
+	}
+	//특정 회원의 카트 전체 삭제 메서드
+	public int deleteCartAll(String clientMail) {
+		this.dbUtil=new DBUtil();
+		int rowCnt=0;
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		try {
+			conn = this.dbUtil.getConnection();
+			String sql = "DELETE from cart WHERE client_mail=?";
+			stmt = conn.prepareStatement(sql);
+			stmt.setString(1, clientMail);
+			System.out.println("카트 삭제 stmt :"+stmt);
+			rowCnt=stmt.executeUpdate();
+		} catch(Exception e) {
+			//오류 내용 출력
+			e.printStackTrace();
+		} finally {
+			this.dbUtil.close(null, stmt, conn);
+		}
+		return rowCnt;
+	}
+	//삭제 선택한 카트 삭제 메서드
+	public int deleteCart(Cart cart) {
+		this.dbUtil=new DBUtil();
+		int rowCnt=0;
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		try {
+			conn = this.dbUtil.getConnection();
+			String sql = "DELETE from cart WHERE client_mail=? AND cart_no=?";
+			stmt = conn.prepareStatement(sql);
+			stmt.setString(1, cart.getClientMail());
+			stmt.setInt(2, cart.getCartNo());
+			System.out.println(cart.getCartNo()+"번의 카트 삭제 stmt :"+stmt);
+			rowCnt=stmt.executeUpdate();
+		} catch(Exception e) {
+			//오류 내용 출력
+			e.printStackTrace();
+		} finally {
+			this.dbUtil.close(null, stmt, conn);
+		}
+		return rowCnt;
+	}
 }
