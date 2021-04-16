@@ -29,15 +29,15 @@
 		for(Map<String,Object> map : cartList){
 			%>
 			<tr>
-				<td><%=map.get("cartNo")%></td>
-				<td><%=map.get("ebookNo") %></td>
-				<td><%=map.get("ebookTitle")%></td>
-				<td><%=map.get("cartDate")%></td>
+				<td><%=(Integer)(map.get("cartNo"))%></td>
+				<td><%=(Integer)(map.get("ebookNo")) %></td>
+				<td><%=(String)(map.get("ebookTitle"))%></td>
+				<td><%=((String)(map.get("cartDate"))).substring(0,10)%></td>
 				<!-- DeleteCartController - CartDao.deleteCart() - redirect:CartListController 
 					Controller로 cartNo값 넘겨 줘야 한다.-->
-				<td><a href="<%=request.getContextPath()%>/DeleteCartController?cartNo=<%=map.get("cartNo")%>">삭제</a></td>
+				<td><a href="<%=request.getContextPath()%>/DeleteCartController?ebookNo=<%=map.get("ebookNo")%>">삭제</a></td>
 				<!-- InsertOrdersController - insertOrders(),deleteCart():issue 트랜잭션? 처리 - redirect:OrdersListController-->
-				<td><a href="">주문</a></td>
+				<td><a href="<%=request.getContextPath()%>/InsertOrdersController?ebookNo=<%=map.get("ebookNo")%>">주문</a></td>
 			</tr>
 			<% 	
 		}

@@ -30,6 +30,8 @@
 			<li><a href="<%=request.getContextPath() %>/LogoutController"><button type="button">logout</button></a></li>
 			<li><a href="<%=request.getContextPath() %>/ClientOneController"><button type="button">회원정보</button></a></li>
 			<li><a href="<%=request.getContextPath() %>/CartListController"><button type="button">장바구니</button></a></li>
+			<!-- OrdersListController - OrdersDao.selectOrdersListByClient() - ordersList.jsp -->
+			<li><a href="<%=request.getContextPath() %>/OrdersListController"><button type="button">주문리스트</button></a></li>
 		</ul>
 	</div>
 <%

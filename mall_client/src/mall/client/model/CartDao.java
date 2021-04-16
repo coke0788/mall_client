@@ -121,12 +121,12 @@ public class CartDao {
 		PreparedStatement stmt = null;
 		try {
 			conn = this.dbUtil.getConnection();
-			String sql = "DELETE from cart WHERE client_mail=? AND cart_no=?";
+			String sql = "DELETE from cart WHERE client_mail=? AND ebook_no=?";
 			stmt = conn.prepareStatement(sql);
 			//Cart vo 전체를 매개변수로 받았기 때문에 cart vo의 무슨 값을 받아올건지 작성해줘야함.
 			stmt.setString(1, cart.getClientMail());
-			stmt.setInt(2, cart.getCartNo());
-			System.out.println(cart.getCartNo()+"번의 카트 삭제 stmt :"+stmt);
+			stmt.setInt(2, cart.getEbookNo());
+			System.out.println(cart.getCartNo()+"번 ebook 카트 삭제 stmt :"+stmt);
 			rowCnt=stmt.executeUpdate();
 		} catch(Exception e) {
 			//오류 내용 출력

@@ -29,10 +29,10 @@ public class DeleteCartController extends HttpServlet {
 		//Dao 호출
 		cartDao = new CartDao();
 		Cart cart=new Cart();
-		int cartNo = Integer.parseInt(request.getParameter("cartNo"));
-		cart.setCartNo(cartNo);
+		int ebookNo = Integer.parseInt(request.getParameter("ebookNo"));
+		cart.setEbookNo(ebookNo);
 		cart.setClientMail(((Client)session.getAttribute("loginClient")).getClientMail());
-		System.out.printf("삭제 카트 넘버:%s, 삭제 카트 클라이언트메일:%s%n",cart.getCartNo(), cart.getClientMail());
+		System.out.printf("삭제 카트 ebook 넘버:%s, 삭제 카트 클라이언트메일:%s%n",cart.getEbookNo(), cart.getClientMail());
 		cartDao.deleteCart(cart);
 		//카트 리스트 이동요청
 		response.sendRedirect(request.getContextPath()+"/CartListController");
