@@ -5,12 +5,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import mall.client.commons.DBUtil;
-import mall.client.vo.Ebook;
+import mall.client.vo.*;
 
 public class EbookDao {
 	private DBUtil dbutil;
 	
-	public List<Ebook> selectEbookListByPage(int beginRow, int rowPerPage) {
+	public List<Ebook> selectEbookListByPageCategoryName(int beginRow, int rowPerPage, String categoryName) {
 		List<Ebook> list = new ArrayList<Ebook>();
 		this.dbutil = new DBUtil();
 		Connection conn = null;
@@ -18,16 +18,26 @@ public class EbookDao {
 		ResultSet rs = null;
 		try { //예외처리를 try catch 문으로.
 		conn = this.dbutil.getConnection();
-		String sql = "SELECT ebook_no ebookNo, ebook_title ebookTitle, ebook_price ebookPrice FROM ebook ORDER BY ebook_date DESC LIMIT ?, ?";
-		stmt = conn.prepareStatement(sql);
-		stmt.setInt(1, beginRow);
-		stmt.setInt(2, rowPerPage);
+		if(categoryName==""||categoryName==null) {
+			String sql = "SELECT category_name categoryName, ebook_no ebookNo, ebook_title ebookTitle, ebook_price ebookPrice FROM ebook ORDER BY ebook_date DESC LIMIT ?, ?";
+			stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, beginRow);
+			stmt.setInt(2, rowPerPage);
+		} else {
+			String sql = "SELECT category_name categoryName, ebook_no ebookNo, ebook_title ebookTitle, ebook_price ebookPrice FROM ebook WHERE category_name=? ORDER BY ebook_date DESC LIMIT ?, ?";
+			stmt = conn.prepareStatement(sql);
+			stmt.setString(1, categoryName);
+			stmt.setInt(2, beginRow);
+			stmt.setInt(3, rowPerPage);
+		}
+		System.out.println("ebook목록 stmt:"+stmt);
 		rs = stmt.executeQuery();
 		while(rs.next()){
 			Ebook e = new Ebook();
 			e.setEbookTitle(rs.getString("ebookTitle"));
 			e.setEbookPrice(rs.getInt("ebookPrice"));
 			e.setEbookNo(rs.getInt("ebookNo"));
+			e.setCategoryName(rs.getString("categoryName"));
 			//e.setEbookImg(rs.getString("ebookImg"));
 			list.add(e);
 		}
@@ -40,7 +50,46 @@ public class EbookDao {
 		
 		return list;
 	}
-	
+	public List<Ebook> selectEbookListByPageSearchWord(int beginRow, int rowPerPage, String searchWord) {
+		List<Ebook> list = new ArrayList<Ebook>();
+		this.dbutil = new DBUtil();
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		try { //예외처리를 try catch 문으로.
+		conn = this.dbutil.getConnection();
+		if(searchWord==""||searchWord==null) {
+			String sql = "SELECT category_name categoryName, ebook_no ebookNo, ebook_title ebookTitle, ebook_price ebookPrice FROM ebook ORDER BY ebook_date DESC LIMIT ?, ?";
+			stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, beginRow);
+			stmt.setInt(2, rowPerPage);
+		} else {
+			String sql = "SELECT category_name categoryName, ebook_no ebookNo, ebook_title ebookTitle, ebook_price ebookPrice FROM ebook WHERE ebook_title LIKE ? ORDER BY ebook_date DESC LIMIT ?, ?";
+			stmt = conn.prepareStatement(sql);
+			stmt.setString(1, "%"+searchWord+"%");
+			stmt.setInt(2, beginRow);
+			stmt.setInt(3, rowPerPage);
+		}
+		System.out.println("ebook목록 stmt:"+stmt);
+		rs = stmt.executeQuery();
+		while(rs.next()){
+			Ebook e = new Ebook();
+			e.setEbookTitle(rs.getString("ebookTitle"));
+			e.setEbookPrice(rs.getInt("ebookPrice"));
+			e.setEbookNo(rs.getInt("ebookNo"));
+			e.setCategoryName(rs.getString("categoryName"));
+			//e.setEbookImg(rs.getString("ebookImg"));
+			list.add(e);
+		}
+		} catch(Exception e) {
+			e.printStackTrace(); //오류메세지 출력
+		//코드가 try절에서 끝나든 catch절에서 끝나든 finally 안의 문법을 실행 시킴. 즉, try절에서 예외 발생 시, catch절로 이동, 후에 finally 실행. try절에서 예외 미발생 시, try절 실행, 후에 finally 실행
+		} finally { 
+			this.dbutil.close(rs, stmt, conn); //해제
+		}
+		
+		return list;
+	}
 	public Ebook selectEbookOne(int ebookNo) {
 		Ebook ebook = null;
 		this.dbutil = new DBUtil();
@@ -75,5 +124,84 @@ public class EbookDao {
 			this.dbutil.close(rs, stmt, conn); //해제
 		}
 		return ebook;
+	}
+	public int totalCntCategoryName(String categoryName) {
+		int totalRow = 0;
+		this.dbutil = new DBUtil();
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		try {
+			conn = dbutil.getConnection();
+			if (categoryName=="" || categoryName==null) { 
+				String sql = "SELECT COUNT(*) cnt FROM ebook";
+				stmt = conn.prepareStatement(sql);
+			} else {
+				String sql = "SELECT COUNT(*) cnt FROM ebook WHERE category_name=?";
+				stmt = conn.prepareStatement(sql);
+				stmt.setString(1, categoryName);
+			}
+			rs = stmt.executeQuery();
+			System.out.println("전체 ebook페이지 stmt : "+stmt);
+			if(rs.next()) {
+				totalRow=rs.getInt("cnt");
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			this.dbutil.close(rs, stmt, conn); //해제
+		}
+		return totalRow;
+	}
+	public int totalCntSearchWord(String searchWord) {
+		int totalRow = 0;
+		this.dbutil = new DBUtil();
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		try {
+			conn = dbutil.getConnection();
+			if (searchWord==""||searchWord==null) { 
+				String sql = "SELECT COUNT(*) cnt FROM ebook";
+				stmt = conn.prepareStatement(sql);
+			} else {
+				String sql = "SELECT COUNT(*) cnt FROM ebook WHERE ebook_title LIKE ?";
+				stmt = conn.prepareStatement(sql);
+				stmt.setString(1, "%"+searchWord+"%");
+			}
+			rs = stmt.executeQuery();
+			System.out.println("전체 ebook페이지 stmt : "+stmt);
+			if(rs.next()) {
+				totalRow=rs.getInt("cnt");
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			this.dbutil.close(rs, stmt, conn); //해제
+		}
+		return totalRow;
+	}
+	public List<String> categoryNameList() {
+		List<String> list = new ArrayList<>();
+		this.dbutil = new DBUtil();
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		try {
+			conn = dbutil.getConnection();
+			String sql = "SELECT category_name categoryName FROM category ORDER BY category_weight DESC";
+			stmt = conn.prepareStatement(sql);
+			rs = stmt.executeQuery();
+			while(rs.next()) {
+				String cn = rs.getString("categoryName");
+				list.add(cn);
+			}
+			System.out.println("카테고리네임 리스트:"+stmt);
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			dbutil.close(rs, stmt, conn);
+		}
+		return list;
 	}
 }

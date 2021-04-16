@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import mall.client.model.EbookDao;
+import mall.client.vo.Category;
 import mall.client.vo.Ebook;
 
 /**
@@ -27,14 +28,40 @@ public class IndexController extends HttpServlet {
 		}
 		int rowPerPage = 15;
 		int beginRow = (currentPage -1)*rowPerPage;
+		String categoryName = request.getParameter("categoryName");
+		String searchWord = request.getParameter("searchWord");
 		
 		// model 호출
 		this.ebookDao = new EbookDao();
-		List<Ebook> ebookList = this.ebookDao.selectEbookListByPage(beginRow, rowPerPage);
+		List<Ebook> ebookList = this.ebookDao.selectEbookListByPageSearchWord(beginRow, rowPerPage, searchWord);
+		if (searchWord=="" || searchWord==null) {//검색어가 없거나, null이라면 카테고리의 목록을 쓸 것.
+			ebookList = this.ebookDao.selectEbookListByPageCategoryName(beginRow, rowPerPage, categoryName);
+		}
+		List<String> categoryNameList = this.ebookDao.categoryNameList();
+		int totalRow = 0;
+		if(categoryName=="" || categoryName==null) { //카테고리네임이 없거나 null이라면 검색어의 목록을 쓸 것.
+			totalRow = this.ebookDao.totalCntSearchWord(searchWord);
+		} else {
+			totalRow = this.ebookDao.totalCntCategoryName(categoryName);
+		}
+		int lastPage = totalRow/rowPerPage;
+		if(totalRow % rowPerPage != 0) {
+			lastPage += 1;
+		}
 		
 		// view forwarding
 		request.setAttribute("ebookList", ebookList);
+		request.setAttribute("categoryNameList", categoryNameList);
+		request.setAttribute("currentPage", currentPage);
+		request.setAttribute("categoryName", categoryName);
+		request.setAttribute("rowPerPage", rowPerPage);
+		request.setAttribute("totalRow", totalRow);
+		request.setAttribute("lastPage", lastPage);
+		request.setAttribute("searchWord", searchWord);
 		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/view/index.jsp"); //페이지 뷰 요청하기
 		rd.forward(request, response); //리퀘스트와 리스폰스 전송? 연결?
+		
+		
+		System.out.printf("currentPage:%s, categoryName:%s, rowPerPage:%d, totalRow:%d, lastPage:%d, searchWord:%s%n", currentPage, categoryName, rowPerPage, totalRow, lastPage, searchWord);
 	}
 }
