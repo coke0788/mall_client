@@ -2,6 +2,7 @@ package mall.client.controller;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -11,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import mall.client.model.EbookDao;
+import mall.client.model.OrdersDao;
 import mall.client.vo.Category;
 import mall.client.vo.Ebook;
 
@@ -20,6 +22,7 @@ import mall.client.vo.Ebook;
 @WebServlet("/IndexController")
 public class IndexController extends HttpServlet {
 	private EbookDao ebookDao; //컨트롤러는 원래 DAO를 가지고 있음.
+	private OrdersDao ordersDao;
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// request 분석
 		int currentPage = 1;
@@ -33,13 +36,21 @@ public class IndexController extends HttpServlet {
 		
 		// model 호출
 		this.ebookDao = new EbookDao();
+		this.ordersDao = new OrdersDao();
+		List<Map<String,Object>> bestOrdersList = this.ordersDao.selectBestOrdersList();
 		List<Ebook> ebookList = this.ebookDao.selectEbookListByPageSearchWord(beginRow, rowPerPage, searchWord);
-		if (searchWord=="" || searchWord==null) {//검색어가 없거나, null이라면 카테고리의 목록을 쓸 것.
+		if(searchWord==null) {
+			searchWord = "";
+		}
+		if(categoryName==null) {
+			categoryName = "";
+		}
+		if (searchWord=="") {//검색어가 없거나, null이라면 카테고리의 목록을 쓸 것.
 			ebookList = this.ebookDao.selectEbookListByPageCategoryName(beginRow, rowPerPage, categoryName);
 		}
 		List<String> categoryNameList = this.ebookDao.categoryNameList();
 		int totalRow = 0;
-		if(categoryName=="" || categoryName==null) { //카테고리네임이 없거나 null이라면 검색어의 목록을 쓸 것.
+		if(categoryName=="") { //카테고리네임이 없거나 null이라면 검색어의 목록을 쓸 것.
 			totalRow = this.ebookDao.totalCntSearchWord(searchWord);
 		} else {
 			totalRow = this.ebookDao.totalCntCategoryName(categoryName);
@@ -50,6 +61,7 @@ public class IndexController extends HttpServlet {
 		}
 		
 		// view forwarding
+		request.setAttribute("bestOrdersList", bestOrdersList);
 		request.setAttribute("ebookList", ebookList);
 		request.setAttribute("categoryNameList", categoryNameList);
 		request.setAttribute("currentPage", currentPage);

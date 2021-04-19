@@ -15,6 +15,7 @@
 		//컨트롤러에서 forwarding한 ebooklist를 얻어옴(오브젝트 타입으로 들어왔으므로 배열로 타입 변경). 배열Ebook 타입 ebookList에 저장.
 		List<Ebook> ebookList=(List<Ebook>)(request.getAttribute("ebookList"));
 		List<String> categoryNameList=(List<String>)(request.getAttribute("categoryNameList"));
+		List<Map<String, Object>> bestOrdersList =(List<Map<String, Object>>)(request.getAttribute("bestOrdersList"));
 		String categoryName="";
 		if(categoryName!=null){
 			categoryName=(String)request.getAttribute("categoryName");
@@ -44,6 +45,40 @@
 
 		</form>
 	</div>
+	<!-- 베스트셀러를 먼저 추력시킴. -->
+	<h3>Best Seller</h3>
+	<table border="1">
+		<tr>
+		<%
+			for(Map m : bestOrdersList) {
+		%>
+
+			<td>
+				<div><img src="<%=request.getContextPath()%>/img/default.jpg"></div>
+				<div><a href="<%=request.getContextPath()%>/EbookOneController?ebookNo=<%=m.get("ebookNo")%>"><%=(String)(m.get("ebookTitle"))%></a></div>
+				<div><%=(Integer)(m.get("ebookPrice")) %></div>
+				<%
+					String ebookSummary = (String)(m.get("ebookSummary"));
+					if(ebookSummary==null) {
+					}else if(ebookSummary.length()<40){
+				%>
+						<div><%=ebookSummary%></div>
+				<%
+					} else {
+				%>
+						<div><%=ebookSummary.substring(0,40)%>...</div>
+				<%		
+					}
+				%>
+			</td>
+		<%
+			}
+		%>
+		</tr>
+	</table>
+	<hr>
+	<!-- 상품 출력 테이블 -->
+	<h3> Ebook List </h3>
 	<table border="1">
 		<tr>
 			<%
@@ -78,6 +113,7 @@
 	}
 %>
 <%
+	//둘다 null인 경우가 있음...
 	if(searchWord==null) { //searchword가 null이면 페이징 작업에 searchword쪽 다 지워버리기.
 		if(1<currentPage && currentPage<lastPage){
 	%>

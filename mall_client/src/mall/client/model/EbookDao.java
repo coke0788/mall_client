@@ -2,7 +2,9 @@ package mall.client.model;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import mall.client.commons.DBUtil;
 import mall.client.vo.*;
@@ -90,6 +92,7 @@ public class EbookDao {
 		
 		return list;
 	}
+	//ebook 상세페이지 메소드
 	public Ebook selectEbookOne(int ebookNo) {
 		Ebook ebook = null;
 		this.dbutil = new DBUtil();
@@ -125,6 +128,7 @@ public class EbookDao {
 		}
 		return ebook;
 	}
+	//카테고리별 전체개수 메소드
 	public int totalCntCategoryName(String categoryName) {
 		int totalRow = 0;
 		this.dbutil = new DBUtil();
@@ -153,6 +157,7 @@ public class EbookDao {
 		}
 		return totalRow;
 	}
+	//검색어 전체개수 메소드
 	public int totalCntSearchWord(String searchWord) {
 		int totalRow = 0;
 		this.dbutil = new DBUtil();
@@ -181,6 +186,7 @@ public class EbookDao {
 		}
 		return totalRow;
 	}
+	//카테고리이름 목록 메소드
 	public List<String> categoryNameList() {
 		List<String> list = new ArrayList<>();
 		this.dbutil = new DBUtil();
@@ -197,6 +203,35 @@ public class EbookDao {
 				list.add(cn);
 			}
 			System.out.println("카테고리네임 리스트:"+stmt);
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			dbutil.close(rs, stmt, conn);
+		}
+		return list;
+	}
+	//신간 리스트 메소드
+	public List<Map<String,Object>> selectEbookByMonth(int year, int month){
+		List<Map<String,Object>> list = new ArrayList<>();
+		this.dbutil = new DBUtil();
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		try {
+			conn = dbutil.getConnection();
+			String sql = "SELECT ebook_no ebookNo, ebook_title ebookTitle, DAY(ebook_date) d FROM ebook WHERE YEAR(ebook_date)=? AND MONTH(ebook_date)=? ORDER BY DAY(ebook_date) ASC";
+			stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, year);
+			stmt.setInt(2, month);
+			rs = stmt.executeQuery();
+			while(rs.next()) {
+				Map<String, Object> map = new HashMap<String, Object>();
+				map.put("ebookNo", rs.getString("ebookNo"));
+				map.put("ebookTitle", rs.getString("ebookTitle"));
+				map.put("d", rs.getInt("d"));
+				list.add(map);
+			}
+			System.out.println("신간 목록:"+stmt);
 		} catch(Exception e) {
 			e.printStackTrace();
 		} finally {

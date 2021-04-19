@@ -56,7 +56,38 @@ public class OrdersDao {
 		} catch(Exception e) {
 			e.printStackTrace();
 		} finally {
-			this.dbUtil.close(null, stmt, conn);
+			this.dbUtil.close(rs, stmt, conn);
+		}
+		return list;
+	}
+	public List<Map<String,Object>> selectBestOrdersList() {
+		/*
+		 * 쿼리 : SELECT t.ebook_no, t.cnt, e.ebook_title, e.ebook_price, e.ebook_summary FROM (SELECT ebook_no, COUNT(ebook_no) cnt FROM orders WHERE orders_state='주문완료' GROUP BY ebook_no HAVING COUNT(ebook_no) > 1 ORDER BY COUNT(ebook_no) DESC LIMIT 5) t INNER JOIN ebook e ON t.ebook_no = e.ebook_no
+		 */
+		List<Map<String, Object>> list = new ArrayList<>();
+		this.dbUtil = new DBUtil();
+		Connection conn=null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		try {
+			conn = dbUtil.getConnection();
+			String sql = "SELECT t.ebook_no ebookNo, t.cnt tCnt, e.ebook_title ebookTitle, e.ebook_price ebookPrice, e.ebook_summary ebookSummary FROM (SELECT ebook_no, COUNT(ebook_no) cnt FROM orders WHERE orders_state='주문완료' GROUP BY ebook_no HAVING COUNT(ebook_no) > 1) t INNER JOIN ebook e ON t.ebook_no = e.ebook_no ORDER BY t.Cnt DESC LIMIT 5";
+			stmt = conn.prepareStatement(sql);
+			rs = stmt.executeQuery();
+			System.out.println("베스트셀러 stmt :"+stmt);
+			while(rs.next()) {
+				Map<String, Object> map = new HashMap<>();
+				map.put("ebookNo", rs.getInt("ebookNo"));
+				map.put("cnt", rs.getInt("tCnt"));
+				map.put("ebookTitle", rs.getString("ebookTitle"));
+				map.put("ebookPrice", rs.getInt("ebookPrice"));
+				map.put("ebookSummary", rs.getString("ebookSummary"));
+				list.add(map);
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			this.dbUtil.close(rs, stmt, conn);
 		}
 		return list;
 	}

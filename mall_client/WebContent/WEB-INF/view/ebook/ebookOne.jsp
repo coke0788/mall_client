@@ -15,6 +15,10 @@
 	<h1> 책 정보 </h1>
 		<table border="1">
 		<tr>
+			<td>ebookNo</td>
+			<td><%=ebook.getEbookNo() %></td>
+		</tr>
+		<tr>
 			<td>ebookState</td>
 			<td><%=ebook.getEbookState() %></td>
 		</tr>

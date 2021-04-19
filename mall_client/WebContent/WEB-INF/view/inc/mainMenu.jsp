@@ -15,6 +15,7 @@
 			<li><a href="<%=request.getContextPath() %>/IndexController"><button type="button">home</button></a></li>
 			<!-- InsertClientController, /view/client/insertClient.jsp -->
 			<li><a href="<%=request.getContextPath()%>/InsertClientController"><button type="button">회원가입</button></a></li>
+			<li><a href="<%=request.getContextPath() %>/EbookCalendarController"><button type="button">신간달력</button></a></li>
 		</ul>
 	</div>
 <%
@@ -32,6 +33,7 @@
 			<li><a href="<%=request.getContextPath() %>/CartListController"><button type="button">장바구니</button></a></li>
 			<!-- OrdersListController - OrdersDao.selectOrdersListByClient() - ordersList.jsp -->
 			<li><a href="<%=request.getContextPath() %>/OrdersListController"><button type="button">주문리스트</button></a></li>
+			<li><a href="<%=request.getContextPath() %>/EbookCalendarController"><button type="button">신간달력</button></a></li>
 		</ul>
 	</div>
 <%
