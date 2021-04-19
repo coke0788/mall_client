@@ -11,6 +11,7 @@
 	<jsp:include page="/WEB-INF/view/inc/mainMenu.jsp"></jsp:include>
 	<h1>Ebook Calendar</h1>
 	<%
+		//사용할 값 전부 불러와서 변수 호출해서 저장하기.
 		List<Map<String,Object>> ebookListByMonth = (List<Map<String,Object>>)(request.getAttribute("ebookListByMonth"));
 		int currentYear = (Integer)(request.getAttribute("currentYear"));
 		int currentMonth = (Integer)(request.getAttribute("currentMonth"));
@@ -30,7 +31,7 @@
 			nextYear = nextYear+1;
 		}
 	%>
-	<!-- n행 7월 달력 -->
+	<!-- n행 7열 달력 -->
 	<div>
 		<span><a href="<%=request.getContextPath()%>/EbookCalendarController?currentYear=<%=preYear%>&currentMonth=<%=preMonth%>">이전달</a></span>
 		<span><%=currentYear%>년 <%=currentMonth%>월</span> 
@@ -55,7 +56,7 @@
 					for(Map m : ebookListByMonth){ //해당하는 날짜에 발간된(ebook_date) 이북의 타이틀 표시.
 		            	if(i==(Integer)m.get("d")) { //형변환
 		            %>
-		            	<div><a href="<%=request.getContextPath()%>/EbookOneController?ebookNo=<%=m.get("ebookNo")%>">
+		            	<div><a href="<%=request.getContextPath()%>/EbookOneController?ebookNo=<%=m.get("ebookNo")%>"> - 
 		            	<%
 		            		String ebookTitle = (String)(m.get("ebookTitle"));
 		            		if(ebookTitle.length()>10){

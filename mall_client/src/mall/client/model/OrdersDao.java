@@ -10,6 +10,7 @@ import mall.client.vo.Orders;
 
 public class OrdersDao {
 	private DBUtil dbUtil;
+	//주문 입력 메소드
 	public int insertOrders(Orders orders) {
 		int rowCnt = 0;
 		this.dbUtil = new DBUtil();
@@ -30,6 +31,7 @@ public class OrdersDao {
 		}
 		return rowCnt;
 	}
+	//주문 목록 메소드
 	public List<Map<String, Object>> selectOrdersListByClient(int clientNo) {
 		List<Map<String, Object>> list = new ArrayList<>();
 		this.dbUtil = new DBUtil();
@@ -60,8 +62,11 @@ public class OrdersDao {
 		}
 		return list;
 	}
+	//베스트셀러 목록 메소드
 	public List<Map<String,Object>> selectBestOrdersList() {
-		/*
+		/*﻿
+			#모집단을 선택(WHERE) -> 그룹선정 -> 그룹 함수 사용(COUNT) -> 결과 값에 대한 조건(HAVING) -> 정렬(ORDER BY)
+			# t = subQuery
 		 * 쿼리 : SELECT t.ebook_no, t.cnt, e.ebook_title, e.ebook_price, e.ebook_summary FROM (SELECT ebook_no, COUNT(ebook_no) cnt FROM orders WHERE orders_state='주문완료' GROUP BY ebook_no HAVING COUNT(ebook_no) > 1 ORDER BY COUNT(ebook_no) DESC LIMIT 5) t INNER JOIN ebook e ON t.ebook_no = e.ebook_no
 		 */
 		List<Map<String, Object>> list = new ArrayList<>();

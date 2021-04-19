@@ -12,6 +12,7 @@ import mall.client.vo.*;
 public class EbookDao {
 	private DBUtil dbutil;
 	
+	//카테고리 이름 기준 목록 메소드
 	public List<Ebook> selectEbookListByPageCategoryName(int beginRow, int rowPerPage, String categoryName) {
 		List<Ebook> list = new ArrayList<Ebook>();
 		this.dbutil = new DBUtil();
@@ -52,6 +53,7 @@ public class EbookDao {
 		
 		return list;
 	}
+	//검색어 기준 목록 메소드
 	public List<Ebook> selectEbookListByPageSearchWord(int beginRow, int rowPerPage, String searchWord) {
 		List<Ebook> list = new ArrayList<Ebook>();
 		this.dbutil = new DBUtil();
