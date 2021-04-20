@@ -66,7 +66,7 @@
 	<c:if test="${loginClient==null || ebook.ebookState eq '품절' || ebook.ebookState eq '절판' || ebook.ebookState eq '구편절판'}">
 		<button type="button" disabled="disabled">장바구니 추가</button>
 	</c:if>
-	<c:if test="${ebook.ebookState eq '판매중'}">
+	<c:if test="${loginClient!=null && ebook.ebookState eq '판매중'}">
 		<button type="button">장바구니 추가</button>
 	</c:if>
 	</a>
