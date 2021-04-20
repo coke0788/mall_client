@@ -11,6 +11,7 @@
 		</form>
 		<ul>
 			<li><a href="${pageContext.request.contextPath}/IndexController"><button type="button">home</button></a></li>
+			<li><a href="${pageContext.request.contextPath}/EbookListController"><button type="button">상품목록</button></a></li>
 			<!-- InsertClientController, /view/client/insertClient.jsp -->
 			<li><a href="${pageContext.request.contextPath}/InsertClientController"><button type="button">회원가입</button></a></li>
 			<li><a href="${pageContext.request.contextPath}/EbookCalendarController"><button type="button">신간달력</button></a></li>
@@ -26,6 +27,7 @@
 		<ul>
 			<li><a href="${pageContext.request.contextPath}/IndexController"><button type="button">home</button></a></li>
 			<li><a href="${pageContext.request.contextPath}/LogoutController"><button type="button">logout</button></a></li>
+			<li><a href="${pageContext.request.contextPath}/EbookListController"><button type="button">상품목록</button></a></li>
 			<li><a href="${pageContext.request.contextPath}/ClientOneController"><button type="button">회원정보</button></a></li>
 			<li><a href="${pageContext.request.contextPath}/CartListController"><button type="button">장바구니</button></a></li>
 			<!-- OrdersListController - OrdersDao.selectOrdersListByClient() - ordersList.jsp -->
