@@ -8,7 +8,7 @@
 <body>
 	<jsp:include page="/WEB-INF/view/inc/mainMenu.jsp"></jsp:include>
 	<h1>회원가입</h1>
-	<form action="<%=request.getContextPath()%>/InsertClientController" method="post">
+	<form action="${pageContext.request.contextPath}/InsertClientController" method="post">
 		<table border="1">
 			<tr>
 				<td>clientMail</td>

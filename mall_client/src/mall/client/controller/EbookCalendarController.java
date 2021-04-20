@@ -31,6 +31,19 @@ public class EbookCalendarController extends HttpServlet {
 		int currentMonth = dday.get(Calendar.MONTH)+1;
 		//이번달의 마지막 날짜
 		int endDay = dday.getActualMaximum(Calendar.DAY_OF_MONTH);
+
+		int preMonth = currentMonth-1;
+		int preYear = currentYear;
+		if(preMonth == 0) { //이전달이 0이 되면 전년도의 12월로.
+			preMonth = 12;
+			preYear = preYear-1;
+		}
+		int nextMonth = currentMonth+1;
+		int nextYear = currentYear;
+		if(nextMonth == 13) {//다음달이 13이 되면 다음년도의 1월로.
+			nextMonth = 1;
+			nextYear = nextYear+1;
+		}
 		
 		
 		//이번달 1일의 요일
@@ -50,6 +63,10 @@ public class EbookCalendarController extends HttpServlet {
 		request.setAttribute("ebookListByMonth", ebookListByMonth);
 		request.setAttribute("endDay", endDay);
 		request.setAttribute("firstDayofWeek", firstDayofWeek);
+		request.setAttribute("preMonth", preMonth);
+		request.setAttribute("preYear", preYear);
+		request.setAttribute("nextMonth", nextMonth);
+		request.setAttribute("nextYear", nextYear);
 		request.getRequestDispatcher("WEB-INF/view/ebook/ebookCalendar.jsp").forward(request, response);
 	}
 }

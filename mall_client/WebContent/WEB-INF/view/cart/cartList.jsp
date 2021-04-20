@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="java.util.*" %>
-<%@ page import = "mall.client.vo.*" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,10 +10,6 @@
 	<!-- 상단 메뉴바. -->
 	<jsp:include page="/WEB-INF/view/inc/mainMenu.jsp"></jsp:include>
 	<!-- 카트 리스트 -->
-	<%
-		//컨트롤러에서 포워딩한 리스트 얻어오기.(오브젝트 타입으로 들어와서 타입변환 해줘야함.)
-		List<Map<String,Object>> cartList = (List<Map<String,Object>>)(request.getAttribute("cartList"));
-	%>
 	<h1>cartList</h1>
 	<table border="1">
 			<tr>
@@ -25,23 +20,19 @@
 				<td>삭제</td>
 				<td>주문</td>
 			</tr>
-		<%
-		for(Map<String,Object> map : cartList){
-			%>
+			<c:forEach var="m" items="${cartList}">
 			<tr>
-				<td><%=(Integer)(map.get("cartNo"))%></td>
-				<td><%=(Integer)(map.get("ebookNo")) %></td>
-				<td><%=(String)(map.get("ebookTitle"))%></td>
-				<td><%=((String)(map.get("cartDate"))).substring(0,10)%></td>
+				<td>${m.cartNo}</td>
+				<td>${m.ebookNo}</td>
+				<td>${m.ebookTitle}</td>
+				<td>${m.cartDate.substring(0,10)}</td>
 				<!-- DeleteCartController - CartDao.deleteCart() - redirect:CartListController 
 					Controller로 cartNo값 넘겨 줘야 한다.-->
-				<td><a href="<%=request.getContextPath()%>/DeleteCartController?ebookNo=<%=map.get("ebookNo")%>">삭제</a></td>
+				<td><a href="${pageContext.request.contextPath}/DeleteCartController?ebookNo=${m.ebookNo}">삭제</a></td>
 				<!-- InsertOrdersController - insertOrders(),deleteCart():issue 트랜잭션? 처리 - redirect:OrdersListController-->
-				<td><a href="<%=request.getContextPath()%>/InsertOrdersController?ebookNo=<%=map.get("ebookNo")%>">주문</a></td>
+				<td><a href="${pageContext.request.contextPath}/InsertOrdersController?ebookNo=${m.ebookNo}">주문</a></td>
 			</tr>
-			<% 	
-		}
-		%>
+		</c:forEach>
 	</table>
 </body>
 </html>
