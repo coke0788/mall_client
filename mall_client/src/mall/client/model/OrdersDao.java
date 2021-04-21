@@ -76,7 +76,7 @@ public class OrdersDao {
 		ResultSet rs = null;
 		try {
 			conn = dbUtil.getConnection();
-			String sql = "SELECT t.ebook_no ebookNo, t.cnt tCnt, e.ebook_title ebookTitle, e.ebook_price ebookPrice, e.ebook_summary ebookSummary FROM (SELECT ebook_no, COUNT(ebook_no) cnt FROM orders WHERE orders_state='주문완료' GROUP BY ebook_no HAVING COUNT(ebook_no) > 1) t INNER JOIN ebook e ON t.ebook_no = e.ebook_no ORDER BY t.Cnt DESC LIMIT 5";
+			String sql = "SELECT t.ebook_no ebookNo, t.cnt tCnt, e.ebook_title ebookTitle, e.ebook_price ebookPrice, e.ebook_summary ebookSummary FROM (SELECT ebook_no, COUNT(ebook_no) cnt FROM orders WHERE orders_state='주문완료' GROUP BY ebook_no HAVING COUNT(ebook_no) > 1) t INNER JOIN ebook e ON t.ebook_no = e.ebook_no ORDER BY t.Cnt DESC LIMIT 6";
 			stmt = conn.prepareStatement(sql);
 			rs = stmt.executeQuery();
 			System.out.println("베스트셀러 stmt :"+stmt);

@@ -88,10 +88,10 @@
 				<form action="${pageContext.request.contextPath}/LoginController" method="post">
 					<div class="form-row">
 						<div class="form-group col-md-4">
-							<input type="text" class="form-control my-2 my-lg-1" name="clientMail" placeholder="input your email." value="test@test.com" required pattern="^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$">
+							<input type="text" class="form-control my-2 my-lg-1 text-white" name="clientMail" placeholder="input your email." value="test@test.com" required pattern="^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$">
 						</div>
 						<div class="form-group col-md-4">
-							<input type="password" class="form-control my-2 my-lg-1" name="clientPw" placeholder="●●●●" value="1234" required pattern="^[A-Za-z0-9]{4,16}$">
+							<input type="password" class="form-control my-2 my-lg-1 text-white" name="clientPw" placeholder="●●●●" value="1234" required pattern="^[A-Za-z0-9]{4,16}$">
 						</div>
 						<div class="form-group align-self-center">
 							<button type="submit" class="btn btn-secondary"> ▶LOGIN</button>
@@ -121,7 +121,7 @@
 	<!-- Container Start -->
 	<div class="container">
 		<div class="row">
-			<div class="col-12">
+			<div class="col-lg-12">
 				<!-- Section title -->
 				<div class="section-title">
 					<h2>BEST SELLER</h2>
@@ -132,38 +132,38 @@
 				<div class="row">
 		<!-- 베스트셀러 -->
 		<c:forEach var="m" items="${bestOrdersList}">
-		<div class="col-lg-3 offset-lg-1 col-md-4 offset-md-1 col-sm-2 col-3">
-		<div class="category-block">
-		<!-- 타이틀 -->
-		<div class="header">
-			<img src="${pageContext.request.contextPath}/img/default.jpg" class="img-fluid" width="100" alt="">
-			<h4><a href="${pageContext.request.contextPath}/EbookOneController?ebookNo=${m.ebookNo}">${m.ebookTitle}&nbsp;</a></h4>
+		<div class="col-sm-12 col-lg-4">
+			<div class="category-block">
+				<!-- 타이틀 -->
+				<div class="header">
+					<img src="${pageContext.request.contextPath}/img/default.jpg" class="img-fluid" width="100" alt="">
+					<h4><a href="${pageContext.request.contextPath}/EbookOneController?ebookNo=${m.ebookNo}">${m.ebookTitle}&nbsp;</a></h4>
+				</div>
+				<!-- /타이틀 -->
+				<!-- 상세정보 -->
+				<ul class="category-list" >
+					<li>
+						<c:if test="${m.ebookSummary==null}">
+						</c:if>
+						<c:if test="${m.ebookSummary.length()<80}">
+							<div>${m.ebookSummary}</div>
+						</c:if>
+						<c:if test="${m.ebookSummary.length()>=80}">
+							<div>${m.ebookSummary.substring(0,80)}...</div>
+						</c:if>
+					</li>
+					<li>
+						<i class="fa fa-won"></i> ${m.ebookPrice}
+					</li>
+					<li><a class="text-right" href="${pageContext.request.contextPath}/EbookOneController?ebookNo=${m.ebookNo}"><i class="fa fa-caret-right"></i>detail</a></li>
+				</ul>
+			</div>
+		<!-- /상세정보 -->
+    	</div>
+    	</c:forEach>
+				</div>
+			</div>
 		</div>
-		<!-- /타이틀 -->
-		<!-- 상세정보 -->
-		<ul class="category-list" >
-				<li>
-					<c:if test="${m.ebookSummary==null}">
-					</c:if>
-					<c:if test="${m.ebookSummary.length()<80}">
-						<div>${m.ebookSummary}</div>
-					</c:if>
-					<c:if test="${m.ebookSummary.length()>=80}">
-						<div>${m.ebookSummary.substring(0,80)}...</div>
-					</c:if>
-				</li>
-				<li>
-					<i class="fa fa-won"></i> ${m.ebookPrice}
-				</li>
-				<li><a class="text-right" href="${pageContext.request.contextPath}/EbookOneController?ebookNo=${m.ebookNo}"><i class="fa fa-caret-right"></i>detail</a></li>
-		
-		</ul>
-	</div>
-	<!-- /공지 -->
-    </div>
-    </c:forEach>
-	</div>
-	</div>
 	</div>
 </section>
 <hr>
@@ -172,6 +172,17 @@
 =============================-->
 
 <footer class="footer section section-sm">
+	        <!-- App promotion -->
+	    <div class="col-lg-2 col-md-4">
+        <div class="block-2 app-promotion">
+          <div class="mobile d-flex align-items-center">
+              <!-- Icon -->
+              <i class="fa fa-users" style="color:white; size:9x"></i>
+            <p class="mb-0">총 접속자 수 <br>  ${total}</p>
+            <p class="mb-0">오늘 접속자 수 <br>  ${statsCount}</p>
+          </div>
+        </div>
+        </div>
   <!-- Container End -->
 </footer>
 <!-- Footer Bottom -->

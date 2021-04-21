@@ -16,7 +16,6 @@ public class UpdateClientPwController extends HttpServlet {
 	private ClientDao clientDao;
 	//비밀번호 수정 페이지로 이동 C>V
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.setCharacterEncoding("utf-8");
 		HttpSession session = request.getSession();
 		//로그인 유효성 검사. 로그인 안 되어 있으면 인덱스로
 		if(session.getAttribute("loginClient")==null) {

@@ -23,8 +23,6 @@ public class LoginController extends HttpServlet {
 			response.sendRedirect(request.getContextPath()+"/IndexController");
 			return;
 		}
-		//문자 인코딩
-		request.setCharacterEncoding("utf-8");
 		String clientMail = request.getParameter("clientMail");
 		String clientPw = request.getParameter("clientPw");
 		//client new연산자 생성.(참조값 객체에 저장)
