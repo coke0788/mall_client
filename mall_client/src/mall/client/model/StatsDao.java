@@ -55,7 +55,7 @@ public class StatsDao {
 		PreparedStatement stmt = null;
 		try {
 			conn = dbUtil.getConnection();
-			String sql="UPDATE SET stats_count=stats_count+1 WHERE stats_day=DATE(NOW())";
+			String sql="UPDATE stats SET stats_count=stats_count+1 WHERE stats_day=DATE(NOW())";
 			stmt = conn.prepareStatement(sql);
 			stmt.executeUpdate();
 		} catch(Exception e) {

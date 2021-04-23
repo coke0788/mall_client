@@ -33,7 +33,13 @@ public class IndexController extends HttpServlet {
 		//접속자수 데이터
 		this.statsDao = new StatsDao();
 		long total = this.statsDao.selectStatsTotal();
-		long statsCount = this.statsDao.selectStatsByToday().getStatsCount();
+		long statsCount = 0;
+		if(this.statsDao.selectStatsByToday()==null) { //이거 톰캣 문제인지, 세션 실행이 일어나지 않는 경우가 있어서 null상태에서 오류나기 때문에 임시방편으로 추가함.
+			statsCount=1;
+		} else {
+			statsCount = this.statsDao.selectStatsByToday().getStatsCount();
+		}
+		System.out.println(statsCount);
 		
 		// view forwarding
 		request.setAttribute("bestOrdersList", bestOrdersList);

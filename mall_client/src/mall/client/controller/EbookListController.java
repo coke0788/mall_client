@@ -70,7 +70,7 @@ public class EbookListController extends HttpServlet {
 		request.setAttribute("totalRow", totalRow);
 		request.setAttribute("lastPage", lastPage);
 		request.setAttribute("searchWord", searchWord);
-		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/view/index.jsp"); //페이지 뷰 요청하기
+		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/view/ebookList.jsp"); //페이지 뷰 요청하기
 		rd.forward(request, response); //리퀘스트와 리스폰스 전송? 연결?
 		
 		

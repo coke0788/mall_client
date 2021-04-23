@@ -3,7 +3,6 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-
   <!-- SITE TITTLE -->
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -42,7 +41,7 @@
 <section>
 	<div class="container">
 		<div class="row">
-			<div class="col-md-12">
+			<div class="col-md-10">
 				<nav class="navbar navbar-expand-lg navbar-light navigation">
 					<a class="navbar-brand" href="">
 						<img src="images/booklogo.png" width="100" height="80">
@@ -52,10 +51,13 @@
 						<span class="navbar-toggler-icon"></span>
 					</button>
 					<div class="collapse navbar-collapse" id="navbarSupportedContent">
-						<ul class="navbar-nav ml-auto main-nav ">
-						
-						<!-- 상단 메뉴바 -->
-						<jsp:include page="/WEB-INF/view/inc/mainMenu.jsp"></jsp:include>
+						<ul class="navbar-nav ml-auto main-nav">
+							<!-- 상단 메뉴바 -->
+							<jsp:include page="/WEB-INF/view/inc/mainMenu.jsp"></jsp:include>
+						</ul>
+						<ul class="navbar-nav ml-auto mt-4">
+							<li class="nav-item">
+							</li>
 						</ul>
 					</div>
 				</nav>
