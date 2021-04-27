@@ -103,30 +103,33 @@
 	<!-- /카테고리 -->
 	
 	<!-- 검색 -->
-	<div class="widget search p-0">
+	<div>
+		<hr>
 		<form action="${pageContext.request.contextPath}/EbookListController" method="get">
-			<input type="text" style="width:30%" class="form-control" placeholder="Search..." name="searchWord">
-			<span class="input-group-addon"><button type="submit" class="btn btn-main-sm"><i class="fa fa-search"></i></button></span>
+		<button type="submit" class="btn btn-main-sm py-3 float-right"><i class="fa fa-search"></i></button>
+			<input type="text" style="width:30%" class="form-control float-right" placeholder="Search..." name="searchWord">
 		</form>
+		<br><br><br>
 	</div>
 	<!-- /검색 -->
 	
 	<!-- 베스트셀러 -->
 	<strong>Best Seller</strong>
-	<table border="1">
+	<table>
 		<tr>
 		<c:forEach var="m" items="${bestOrdersList}">
 			<td>
-				<div><img src="${pageContext.request.contextPath}/img/default.jpg"></div>
-				<div><a href="${pageContext.request.contextPath}/EbookOneController?ebookNo=${m.ebookNo}">${m.ebookTitle}</a></div>
-				<div>${m.ebookPirce}</div>
+					<img src="${pageContext.request.contextPath}/img/default.jpg" width="200" alt="">
+				<hr>
+				<div><a href="${pageContext.request.contextPath}/EbookOneController?ebookNo=${m.ebookNo}"><i class="fa fa-book"></i> ${m.ebookTitle}</a></div>
+				<div><i class="fa fa-won"></i>${m.ebookPrice}</div>
 					<c:if test="${m.ebookSummary==null}">
 					</c:if>
 					<c:if test="${m.ebookSummary.length()<40}">
-						<div>${m.ebookSummary}</div>
+						<div><i class="fa fa-align-justify"></i> ${m.ebookSummary}</div>
 					</c:if>
 					<c:if test="${m.ebookSummary.length()>=40}">
-						<div>${m.ebookSummary.substring(0,40)}...</div>
+						<div><i class="fa fa-align-justify"></i> ${m.ebookSummary.substring(0,40)}...</div>
 					</c:if>
 			</td>
 		</c:forEach>
@@ -137,95 +140,161 @@
 	
 	<!-- 상품 리스트 -->
 	<Strong> E-book List </Strong>
-	<table border="1">
-		<tr>
-			<!-- i 변수를 사용할거기 때문에 변수 선언. -->
-			<c:set var="i" value="0"/>
-			<c:forEach var="e" items="${ebookList}">
-				<!-- i 변수는 i+1을 반복할거고 5로 나눴을 때 나눠떨어지면 줄바꿈. -->
-				<c:set var="i" value="${i+1}"/>
-					<td>
-						<div><img src="${pageContext.request.contextPath}/img/default.jpg"></div>
-						<!-- EbookOneController, EbookDao.selectEbookOne, ebookOne.jsp -->
-						<div><a href="${pageContext.request.contextPath}/EbookOneController?ebookNo=${e.ebookNo}">${e.ebookTitle}</a></div>
-						<div>${e.categoryName}</div>
-						<div>${e.ebookPrice}</div>
-					</td>
-					<c:if test="${i%5==0}">
-						<tr></tr>
-					</c:if>
-			</c:forEach>
-		</tr>
-	</table>
+	<c:forEach var="e" items="${ebookList}">
+	<div class="ad-listing-list mt-20">
+	    <div class="row p-lg-2 p-sm-4 p-4 ">
+	        <div class="col-lg-2 container-fluid">
+	        <a href="${pageContext.request.contextPath}/EbookOneController?ebookNo=${e.ebookNo}">
+	        	<img src="${pageContext.request.contextPath}/img/default.jpg" class="img-fluid" width="200" alt="">
+	        </a>
+	        </div>
+	        <div class="col-lg-8">
+	            <div class="row">
+	                <div class="col-lg-4 col-md-4">
+	                    <div class="ad-listing-content">
+	                    	<div>
+	                            ${e.ebookISBN}
+	                        </div>
+	                        <div>
+	                            <a href="${pageContext.request.contextPath}/EbookOneController?ebookNo=${e.ebookNo}"><i class="fa fa-book"></i> ${e.ebookTitle}</a>
+	                        </div>
+	                        <ul class="list-inline mt-2 mb-3">
+	                            <li class="list-inline-item"><i class="fa fa-folder-open-o"></i> ${e.categoryName}</li>
+	                            <li class="list-inline-item"><i class="fa fa-calendar"></i> ${e.ebookDate.substring(0,10)}</li>
+	                            <li class="list-inline-item"><i class="fa fa-user"></i> ${e.ebookAuthor}</li>
+	                        </ul>
+	                    </div>
+	                </div>
+	                <div class="col-md-6 align-self-center pull-right">
+	                    <div class="product-ratings float-lg-right pb-3">
+	                        <ul class="list-inline">
+	                            <li class="list-inline-item selected"><i class="fa fa-won"></i> ${e.ebookPrice}</li>
+	                        </ul>
+	                    </div>
+	                </div>
+	            </div>
+	        </div>
+		</div>
 	</div>
-</section>
-	<!-- 마지막 페이지가 1이면 그냥 현재페이지만 출력 -->
-	<c:if test="${lastPage<=1}">
-		<button>현재페이지</button>
-	</c:if>
-	<!-- 마지막 페이지가 1이 아닐 경우에만 페이징 작업 실행. -->
-	<c:if test="${lastPage>1}">
-		<!-- searchword가 null이면 페이징 작업에 searchword쪽 다 지워버리기. -->
-		<c:if test="${searchWord eq '' && categoryName ne '' }">
-			<c:if test="${1<currentPage && currentPage<lastPage}">
-				<a href="${pageContext.request.contextPath}/EbookListController?currentPage=1&rowPerPage=${rowPerPage}&categoryName=${categoryName}"><button>처음으로</button></a>
-				<a href="${pageContext.request.contextPath}/EbookListController?currentPage=${currentPage-1}&rowPerPage=${rowPerPage}&categoryName=${categoryName}"><button>이전</button></a>
-				<button>현재페이지</button>
-				<a href="${pageContext.request.contextPath}/EbookListController?currentPage=${currentPage+1}&rowPerPage=${rowPerPage}&categoryName=${categoryName}"><button>다음</button></a>
-				<a href="${pageContext.request.contextPath}/EbookListController?currentPage=${lastPage}&rowPerPage=${rowPerPage}&categoryName=${categoryName}"><button>끝으로</button></a>
-			</c:if>
-			<c:if test="${currentPage==1}">
-				<button>현재페이지</button>
-				<a href="${pageContext.request.contextPath}/EbookListController?currentPage=${currentPage+1}&rowPerPage=${rowPerPage}&categoryName=${categoryName}"><button>다음</button></a>
-				<a href="${pageContext.request.contextPath}/EbookListController?currentPage=${lastPage}&rowPerPage=${rowPerPage}&categoryName=${categoryName}"><button>끝으로</button></a>
-			</c:if>
-			<c:if test="${currentPage==lastPage}">
-				<a href="${pageContext.request.contextPath}/EbookListController?currentPage=1&rowPerPage=${rowPerPage}&categoryName=${categoryName}"><button>처음으로</button></a>
-				<a href="${pageContext.request.contextPath}/EbookListController?currentPage=${currentPage-1}&rowPerPage=${rowPerPage}&categoryName=${categoryName}"><button>이전</button></a>
-				<button>현재페이지</button>
-			</c:if>
-		</c:if>
+	</c:forEach>
+	<!-- 페이징 -->
+	<hr>
+	<div class="pagination justify-content-center">
+	  <nav aria-label="Page navigation example">
+	    <ul class="pagination">
+			<li class="page-item">
+				<!-- 마지막 페이지가 1이면 그냥 현재페이지만 출력 -->
+				<c:if test="${lastPage<=1}">
+					<li class="page-item active"><a class="page-link" href="">${currentPage}</a></li>
+				</c:if>
+			</li>
+			<li class="page-item">
+			<!-- 마지막 페이지가 1이 아닐 경우에만 페이징 작업 실행. -->
+			<c:if test="${lastPage>1}">
+				<!-- searchword가 null이면 페이징 작업에 searchword쪽 다 지워버리기. -->
+				<c:if test="${searchWord eq '' && categoryName ne '' }">
+					<c:if test="${1<currentPage && currentPage<lastPage}">
+						 <li class="page-item"><a class="page-link" aria-label="Previous" href="${pageContext.request.contextPath}/EbookListController?currentPage=1&rowPerPage=${rowPerPage}&categoryName=${categoryName}">
+							<span aria-hidden="true">&laquo;</span>
+							<span class="sr-only">Previous</span>
+						</a></li>
+						<li class="page-item"><a class="page-link" aria-label="Previous" href="${pageContext.request.contextPath}/EbookListController?currentPage=${currentPage-1}&rowPerPage=${rowPerPage}&categoryName=${categoryName}">${currentPage-1}</a></li>
+						<li class="page-item active"><a class="page-link" href="">${currentPage}</a></li>
+						<li class="page-item"><a class="page-link" aria-label="Next" href="${pageContext.request.contextPath}/EbookListController?currentPage=${currentPage+1}&rowPerPage=${rowPerPage}&categoryName=${categoryName}">${currentPage+1}</a>
+						<li class="page-item"><a class="page-link" aria-label="Next" href="${pageContext.request.contextPath}/EbookListController?currentPage=${lastPage}&rowPerPage=${rowPerPage}&categoryName=${categoryName}">
+							<span aria-hidden="true">&raquo;</span>
+							<span class="sr-only">Next</span>
+						</a></li>
+					</c:if>
+					<c:if test="${currentPage==1}">
+						<li class="page-item active"><a class="page-link" href="">${currentPage}</a></li>
+						<li class="page-item"><a class="page-link" aria-label="Next" href="${pageContext.request.contextPath}/EbookListController?currentPage=${currentPage+1}&rowPerPage=${rowPerPage}&categoryName=${categoryName}">${currentPage+1}</a>
+						<li class="page-item"><a class="page-link" aria-label="Next" href="${pageContext.request.contextPath}/EbookListController?currentPage=${lastPage}&rowPerPage=${rowPerPage}&categoryName=${categoryName}">
+							<span aria-hidden="true">&raquo;</span>
+							<span class="sr-only">Next</span>
+						</a></li>
+					</c:if>
+					<c:if test="${currentPage==lastPage}">
+						<li class="page-item"><a class="page-link" aria-label="Previous" href="${pageContext.request.contextPath}/EbookListController?currentPage=1&rowPerPage=${rowPerPage}&categoryName=${categoryName}">
+							<span aria-hidden="true">&laquo;</span>
+							<span class="sr-only">Previous</span>
+						</a></li>
+						<li class="page-item"><a class="page-link" aria-label="Previous" href="${pageContext.request.contextPath}/EbookListController?currentPage=${currentPage-1}&rowPerPage=${rowPerPage}&categoryName=${categoryName}">${currentPage-1}</a></li>
+						<li class="page-item active"><a class="page-link" href="">${currentPage}</a></li>
+					</c:if>
+				</c:if>
 		<!-- categoryName이 null이면 페이징 작업에 categoryName쪽 다 지워버리기. -->
 		<c:if test="${categoryName eq '' && searchWord ne ''}">
 			<c:if test="${1<currentPage && currentPage<lastPage}">
-				<a href="${pageContext.request.contextPath}/EbookListController?currentPage=1&rowPerPage=${rowPerPage}&searchWord=${searchWord}"><button>처음으로</button></a>
-				<a href="${pageContext.request.contextPath}/EbookListController?currentPage=${currentPage-1}&rowPerPage=${rowPerPage}&searchWord=${searchWord}"><button>이전</button></a>
-				<button>현재페이지</button>
-				<a href="${pageContext.request.contextPath}/EbookListController?currentPage=${currentPage+1}&rowPerPage=${rowPerPage}&searchWord=${searchWord}"><button>다음</button></a>
-				<a href="${pageContext.request.contextPath}/EbookListController?currentPage=${lastPage}&rowPerPage=${rowPerPage}&searchWord=${searchWord}"><button>끝으로</button></a>
+				<li class="page-item"><a class="page-link" aria-label="Previous" href="${pageContext.request.contextPath}/EbookListController?currentPage=1&rowPerPage=${rowPerPage}&searchWord=${searchWord}">
+					<span aria-hidden="true">&laquo;</span>
+					<span class="sr-only">Previous</span>
+				</a></li>
+				<li class="page-item"><a class="page-link" aria-label="Previous" href="${pageContext.request.contextPath}/EbookListController?currentPage=${currentPage-1}&rowPerPage=${rowPerPage}&searchWord=${searchWord}">${currentPage-1}</a></li>
+				<li class="page-item active"><a class="page-link" href="">${currentPage}</a></li>
+				<li class="page-item"><a class="page-link" aria-label="Next" href="${pageContext.request.contextPath}/EbookListController?currentPage=${currentPage+1}&rowPerPage=${rowPerPage}&searchWord=${searchWord}">${currentPage+1}</a></li>
+				<li class="page-item"><a class="page-link" aria-label="Next" href="${pageContext.request.contextPath}/EbookListController?currentPage=${lastPage}&rowPerPage=${rowPerPage}&searchWord=${searchWord}">
+					<span aria-hidden="true">&raquo;</span>
+					<span class="sr-only">Next</span>
+				</a></li>
 			</c:if>
 			<c:if test="${currentPage==1}">
-				<button>현재페이지</button>
-				<a href="${pageContext.request.contextPath}/EbookListController?currentPage=${currentPage+1}&rowPerPage=${rowPerPage}&searchWord=${searchWord}"><button>다음</button></a>
-				<a href="${pageContext.request.contextPath}/EbookListController?currentPage=${lastPage}&rowPerPage=${rowPerPage}&searchWord=${searchWord}"><button>끝으로</button></a>
+				<li class="page-item active"><a class="page-link" href="">${currentPage}</a></li>
+				<li class="page-item"><a class="page-link" aria-label="Next" href="${pageContext.request.contextPath}/EbookListController?currentPage=${currentPage+1}&rowPerPage=${rowPerPage}&searchWord=${searchWord}">${currentPage+1}</a></li>
+				<li class="page-item"><a class="page-link" aria-label="Next" href="${pageContext.request.contextPath}/EbookListController?currentPage=${lastPage}&rowPerPage=${rowPerPage}&searchWord=${searchWord}">
+					<span aria-hidden="true">&raquo;</span>
+					<span class="sr-only">Next</span>
+				</a></li>
 			</c:if>
 			<c:if test="${currentPage==lastPage}">
-				<a href="${pageContext.request.contextPath}/EbookListController?currentPage=1&rowPerPage=${rowPerPage}&searchWord=${searchWord}"><button>처음으로</button></a>
-				<a href="${pageContext.request.contextPath}/EbookListController?currentPage=${currentPage-1}&rowPerPage=${rowPerPage}&searchWord=${searchWord}"><button>이전</button></a>
-				<button>현재페이지</button>
+				<li class="page-item"><a class="page-link" aria-label="Previous" href="${pageContext.request.contextPath}/EbookListController?currentPage=1&rowPerPage=${rowPerPage}&searchWord=${searchWord}">
+					<span aria-hidden="true">&laquo;</span>
+					<span class="sr-only">Previous</span>
+				</a></li>
+				<li class="page-item"><a class="page-link" aria-label="Previous" href="${pageContext.request.contextPath}/EbookListController?currentPage=${currentPage-1}&rowPerPage=${rowPerPage}&searchWord=${searchWord}">${currentPage-1}</a></li>
+				<li class="page-item active"><a class="page-link" href="">${currentPage}</a></li>
 			</c:if>
 		</c:if>
 		<!-- 둘다 null일 경우에도 출력 시켜야 함. 둘 다 안받을거. -->
-			<c:if test="${categoryName eq '' && searchWord eq ''}">
+		<c:if test="${categoryName eq '' && searchWord eq ''}">
 			<c:if test="${1<currentPage && currentPage<lastPage}">
-				<a href="${pageContext.request.contextPath}/EbookListController?currentPage=1&rowPerPage=${rowPerPage}"><button>처음으로</button></a>
-				<a href="${pageContext.request.contextPath}/EbookListController?currentPage=${currentPage-1}&rowPerPage=${rowPerPage}"><button>이전</button></a>
-				<button>현재페이지</button>
-				<a href="${pageContext.request.contextPath}/EbookListController?currentPage=${currentPage+1}&rowPerPage=${rowPerPage}"><button>다음</button></a>
-				<a href="${pageContext.request.contextPath}/EbookListController?currentPage=${lastPage}&rowPerPage=${rowPerPage}"><button>끝으로</button></a>
+				<li class="page-item"><a class="page-link" aria-label="Previous" href="${pageContext.request.contextPath}/EbookListController?currentPage=1&rowPerPage=${rowPerPage}">
+					<span aria-hidden="true">&laquo;</span>
+					<span class="sr-only">Previous</span>
+				</a></li>
+				<li class="page-item"><a class="page-link" aria-label="Previous" href="${pageContext.request.contextPath}/EbookListController?currentPage=${currentPage-1}&rowPerPage=${rowPerPage}">${currentPage-1}</a></li>
+				<li class="page-item active"><a class="page-link" href="">${currentPage}</a></li>
+				<li class="page-item"><a class="page-link" aria-label="Next" href="${pageContext.request.contextPath}/EbookListController?currentPage=${currentPage+1}&rowPerPage=${rowPerPage}">${currentPage+1}</a></li>
+				<li class="page-item"><a class="page-link" aria-label="Next" href="${pageContext.request.contextPath}/EbookListController?currentPage=${lastPage}&rowPerPage=${rowPerPage}">
+					<span aria-hidden="true">&raquo;</span>
+					<span class="sr-only">Next</span>
+				</a></li>
 			</c:if>
 			<c:if test="${currentPage==1}">
-				<button>현재페이지</button>
-				<a href="${pageContext.request.contextPath}/EbookListController?currentPage=${currentPage+1}&rowPerPage=${rowPerPage}"><button>다음</button></a>
-				<a href="${pageContext.request.contextPath}/EbookListController?currentPage=${lastPage}&rowPerPage=${rowPerPage}"><button>끝으로</button></a>
+				<li class="page-item active"><a class="page-link" href="">${currentPage}</a></li>
+				<li class="page-item"><a class="page-link" aria-label="Next" href="${pageContext.request.contextPath}/EbookListController?currentPage=${currentPage+1}&rowPerPage=${rowPerPage}">${currentPage+1}</a></li>
+				<li class="page-item"><a class="page-link" aria-label="Next" href="${pageContext.request.contextPath}/EbookListController?currentPage=${lastPage}&rowPerPage=${rowPerPage}">
+					<span aria-hidden="true">&raquo;</span>
+					<span class="sr-only">Next</span>
+				</a></li>
 			</c:if>
 			<c:if test="${currentPage==lastPage}">
-				<a href="${pageContext.request.contextPath}/EbookListController?currentPage=1&rowPerPage=${rowPerPage}"><button>처음으로</button></a>
-				<a href="${pageContext.request.contextPath}/EbookListController?currentPage=${currentPage-1}&rowPerPage=${rowPerPage}"><button>이전</button></a>
-				<button>현재페이지</button>
+				<li class="page-item"><a class="page-link" aria-label="Previous" href="${pageContext.request.contextPath}/EbookListController?currentPage=1&rowPerPage=${rowPerPage}">
+					<span aria-hidden="true">&laquo;</span>
+					<span class="sr-only">Previous</span>
+				</a></li>
+				<li class="page-item"><a class="page-link" aria-label="Previous" href="${pageContext.request.contextPath}/EbookListController?currentPage=${currentPage-1}&rowPerPage=${rowPerPage}">${currentPage-1}</a></li>
+				<li class="page-item active"><a class="page-link" href="">${currentPage}</a></li>
 			</c:if>
 		</c:if>
-	</c:if>
+		</c:if>
+		</li>
+	</ul>
+	</nav>
+	</div>
+	<!-- /페이징 -->
+	</div>
+</section>
 <!--============================
 =            Footer            =
 =============================-->

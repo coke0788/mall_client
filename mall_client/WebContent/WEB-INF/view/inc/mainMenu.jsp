@@ -15,7 +15,7 @@
 			</li>
 			<!-- InsertClientController, /view/client/insertClient.jsp -->
 			<li class="nav-item">
-				<a class="nav-link" href="${pageContext.request.contextPath}/InsertClientController"><i class="fa fa-plus" style="size:7x"> SIGNIN</i></a>
+				<a class="nav-link" href="${pageContext.request.contextPath}/InsertClientController"><i class="fa fa-plus" style="size:9x"> SIGN UP</i></a>
 			</li>
 		</ul>
 </c:if>
@@ -44,7 +44,7 @@
 				</div>
 			</li>
 			<li class="nav-item">
-				<a class="nav-link" href="${pageContext.request.contextPath}/LogoutController">LOGOUT</a>
+				<a class="nav-link" href="${pageContext.request.contextPath}/LogoutController"><i class="fa fa-sign-out" style="size:9x"> LOGOUT</i></a>
 			</li>
 		</ul>
 </c:if>

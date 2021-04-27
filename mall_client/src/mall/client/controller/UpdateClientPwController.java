@@ -22,7 +22,10 @@ public class UpdateClientPwController extends HttpServlet {
 			response.sendRedirect(request.getContextPath()+"/IndexController");
 			return;
 		}
+		Client client = new Client();
+		String clientMail = (((Client)(session.getAttribute("loginClient"))).getClientMail());
 		//view forwarding
+		request.setAttribute("clientMail", clientMail);
 		request.getRequestDispatcher("/WEB-INF/view/client/updateClientPw.jsp").forward(request, response);
 	}
 	

@@ -22,12 +22,12 @@ public class EbookDao {
 		try { //예외처리를 try catch 문으로.
 		conn = this.dbutil.getConnection();
 		if(categoryName==""||categoryName==null) {
-			String sql = "SELECT category_name categoryName, ebook_no ebookNo, ebook_title ebookTitle, ebook_price ebookPrice FROM ebook ORDER BY ebook_date DESC LIMIT ?, ?";
+			String sql = "SELECT ebook_date ebookDate, ebook_author ebookAuthor, ebook_isbn ebookISBN, category_name categoryName, ebook_no ebookNo, ebook_title ebookTitle, ebook_price ebookPrice FROM ebook ORDER BY ebook_date DESC LIMIT ?, ?";
 			stmt = conn.prepareStatement(sql);
 			stmt.setInt(1, beginRow);
 			stmt.setInt(2, rowPerPage);
 		} else {
-			String sql = "SELECT category_name categoryName, ebook_no ebookNo, ebook_title ebookTitle, ebook_price ebookPrice FROM ebook WHERE category_name=? ORDER BY ebook_date DESC LIMIT ?, ?";
+			String sql = "SELECT ebook_date ebookDate, ebook_author ebookAuthor, ebook_isbn ebookISBN, category_name categoryName, ebook_no ebookNo, ebook_title ebookTitle, ebook_price ebookPrice FROM ebook WHERE category_name=? ORDER BY ebook_date DESC LIMIT ?, ?";
 			stmt = conn.prepareStatement(sql);
 			stmt.setString(1, categoryName);
 			stmt.setInt(2, beginRow);
@@ -41,6 +41,9 @@ public class EbookDao {
 			e.setEbookPrice(rs.getInt("ebookPrice"));
 			e.setEbookNo(rs.getInt("ebookNo"));
 			e.setCategoryName(rs.getString("categoryName"));
+			e.setEbookAuthor(rs.getString("ebookAuthor"));
+			e.setEbookISBN(rs.getString("ebookISBN"));
+			e.setEbookDate(rs.getString("ebookDate"));
 			//e.setEbookImg(rs.getString("ebookImg"));
 			list.add(e);
 		}
@@ -63,12 +66,12 @@ public class EbookDao {
 		try { //예외처리를 try catch 문으로.
 		conn = this.dbutil.getConnection();
 		if(searchWord==""||searchWord==null) {
-			String sql = "SELECT category_name categoryName, ebook_no ebookNo, ebook_title ebookTitle, ebook_price ebookPrice FROM ebook ORDER BY ebook_date DESC LIMIT ?, ?";
+			String sql = "SELECT ebook_date ebookDate, ebook_author ebookAuthor, ebook_isbn ebookISBN, category_name categoryName, ebook_no ebookNo, ebook_title ebookTitle, ebook_price ebookPrice FROM ebook ORDER BY ebook_date DESC LIMIT ?, ?";
 			stmt = conn.prepareStatement(sql);
 			stmt.setInt(1, beginRow);
 			stmt.setInt(2, rowPerPage);
 		} else {
-			String sql = "SELECT category_name categoryName, ebook_no ebookNo, ebook_title ebookTitle, ebook_price ebookPrice FROM ebook WHERE ebook_title LIKE ? ORDER BY ebook_date DESC LIMIT ?, ?";
+			String sql = "SELECT ebook_date ebookDate, ebook_author ebookAuthor, ebook_isbn ebookISBN, category_name categoryName, ebook_no ebookNo, ebook_title ebookTitle, ebook_price ebookPrice FROM ebook WHERE ebook_title LIKE ? ORDER BY ebook_date DESC LIMIT ?, ?";
 			stmt = conn.prepareStatement(sql);
 			stmt.setString(1, "%"+searchWord+"%");
 			stmt.setInt(2, beginRow);
@@ -82,6 +85,9 @@ public class EbookDao {
 			e.setEbookPrice(rs.getInt("ebookPrice"));
 			e.setEbookNo(rs.getInt("ebookNo"));
 			e.setCategoryName(rs.getString("categoryName"));
+			e.setEbookAuthor(rs.getString("ebookAuthor"));
+			e.setEbookISBN(rs.getString("ebookISBN"));
+			e.setEbookDate(rs.getString("ebookDate"));
 			//e.setEbookImg(rs.getString("ebookImg"));
 			list.add(e);
 		}

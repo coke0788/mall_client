@@ -78,26 +78,25 @@
 				<!-- Header Contetnt -->
 				<div class="content-block">
 					<h1> INDEX </h1>
-					<p>Welcome to come into E-BOOK shopping mall. <br> if you didn't login or register as member, <br> look at below! </p>
+					<p> Welcome to the our E-BOOK shopping mall. <br> if you didn't login as a member, <br> PlEASE LOGIN FIRST! </p>
 				</div>
 			</div>
 		</div>
 	</div>
 		<div class="container">
 			<div class="row justify-content-center">
-				<div class="col-lg-12 col-md-12 align-content-center">
+				<div class="col-lg-10 col-md-12 align-content-center">
 				<c:if test="${loginClient == null}">
 				<form action="${pageContext.request.contextPath}/LoginController" method="post">
 					<div class="form-row">
-						<div class="form-group col-md-4">
+						<div class="form-group col-md-5">
 							<input type="text" class="form-control my-2 my-lg-1 text-white" name="clientMail" placeholder="input your email." value="test@test.com" required pattern="^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$">
 						</div>
-						<div class="form-group col-md-4">
+						<div class="form-group col-md-5">
 							<input type="password" class="form-control my-2 my-lg-1 text-white" name="clientPw" placeholder="●●●●" value="1234" required pattern="^[A-Za-z0-9]{4,16}$">
 						</div>
 						<div class="form-group align-self-center">
-							<button type="submit" class="btn btn-secondary"> ▶LOGIN</button>
-							<a href="${pageContext.request.contextPath}/InsertClientController"><button type="button" class="btn btn-primary"> ▶REGISTER</button></a>
+							<button type="submit" class="btn btn-secondary"><i class="fa fa-sign-in"></i> LOGIN</button>
 						</div>
 					</div>
 				</form>
